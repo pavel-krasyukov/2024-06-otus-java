@@ -13,15 +13,6 @@ dependencies {
 
 val mainClassName = "ru.otus.HelloOtus"
 
-/*application {
-}*/
-
-/*tasks.jar {
-    manifest {
-        attributes["Main-Class"] = mainClassName
-    }
-}*/
-
 tasks {
     named<ShadowJar>("shadowJar") {
         archiveBaseName.set("gradleHelloOtus")

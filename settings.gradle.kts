@@ -1,7 +1,11 @@
+import org.gradle.plugins.ide.idea.model.IdeaLanguageLevel
+
 rootProject.name = "otus_java"
 include("hw01-gradle")
+include("hw04-generics")
 
 pluginManagement {
+
     val jgitver: String by settings
     val dependencyManagement: String by settings
     val springframeworkBoot: String by settings
@@ -20,5 +24,9 @@ pluginManagement {
         id("com.google.protobuf") version protobufVer
         id("name.remal.sonarlint") version sonarlint
         id("com.diffplug.spotless") version spotless
+
     }
+
 }
+
+
