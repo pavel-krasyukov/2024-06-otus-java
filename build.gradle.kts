@@ -19,8 +19,6 @@ idea {
 }
 
 allprojects {
-    /*group = "org.example"
-    version = "1.0-SNAPSHOT"*/
     group = "ru.otus"
 
     repositories {
@@ -32,11 +30,6 @@ allprojects {
     val protobufBom: String by project
     val guava: String by project
 
-    /*dependencies {
-        testImplementation(platform("org.junit:junit-bom:5.9.1"))
-        testImplementation("org.junit.jupiter:junit-jupiter")
-        implementation("com.google.guava:guava:latest.release")
-    }*/
     apply(plugin = "io.spring.dependency-management")
     dependencyManagement {
         dependencies {
