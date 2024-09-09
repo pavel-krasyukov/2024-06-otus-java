@@ -28,5 +28,4 @@ pluginManagement {
     }
 
 }
-
-
+include("hw06-annotations")
