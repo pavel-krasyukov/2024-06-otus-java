@@ -9,8 +9,13 @@ import homework.annotations.Test;
 
 public class MyTest {
     @Before
-    public void setup() {
-	System.out.println("setup....");
+    public void setup1() {
+	System.out.println("setup1....");
+    }
+
+    @Before
+    public void setup2() {
+	System.out.println("setup2....");
     }
 
     @Test
