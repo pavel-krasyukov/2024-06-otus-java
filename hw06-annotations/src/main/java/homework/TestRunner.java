@@ -20,6 +20,7 @@ import static homework.MethodTypes.TEST;
 public class TestRunner {
 
     public static void runTests(String className) {
+
 	int successCount = 0;
 	int failureCount = 0;
 	var mapMethods = MethodTypes.getMapMethods();
