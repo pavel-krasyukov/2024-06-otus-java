@@ -8,6 +8,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,22 +20,29 @@ import static homework.MethodTypes.TEST;
 
 public class TestRunner {
 
-    public static void runTests(String className) {
+    private static Map<MethodTypes, List<Method>> getMapMethods() {
+	LinkedHashMap<MethodTypes, List<Method>> result = new LinkedHashMap<>();
+	for (MethodTypes methodTypes : MethodTypes.values()) {
+	    result.put(methodTypes, new ArrayList<>());
+	}
+	return result;
+    }
 
+    public static void runTests(String className) {
 	int successCount = 0;
 	int failureCount = 0;
-	var mapMethods = MethodTypes.getMapMethods();
+	var mapMethods = getMapMethods();
 	try {
-	    MethodTypes.clearMapMethodsListMethods();
 	    Class<?> classForTest = Class.forName(className);
 	    Method[] classMethods = classForTest.getDeclaredMethods();
+	    //Распределить методы по спискам согласно их аннотациям
 	    for (MethodTypes methodTypes : MethodTypes.values()) {
 		fillMapMethods(classMethods, mapMethods, methodTypes.getAnnotationClass());
 	    }
 	    Object testObject = classForTest.getConstructor().newInstance();
 	    try {
 		runAnnotationMetods(classForTest, testObject, Before.class);
-		runAnnotationMetods(classForTest, testObject, Test.class); //метод test по условию задачи один
+		runAnnotationMetods(classForTest, testObject, Test.class);
 		successCount++;
 	    } catch (Exception exception) {
 		failureCount++;
@@ -53,7 +61,6 @@ public class TestRunner {
 		    Class<? extends Annotation> annotationClass) {
 	for (Method method : methods) {
 	    if (method.isAnnotationPresent(annotationClass)) {
-		mapMethods.putIfAbsent(MethodTypes.fromAnnotationClass(annotationClass), new ArrayList<>());
 		mapMethods.get(MethodTypes.fromAnnotationClass(annotationClass)).add(method);
 	    }
 	}

@@ -5,10 +5,6 @@ import homework.annotations.Before;
 import homework.annotations.Test;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 public enum MethodTypes {
     BEFORE(Before.class),
@@ -34,25 +30,4 @@ public enum MethodTypes {
         throw new IllegalArgumentException("No MethodTypes found for class: " + annotationClass.getName());
     }
 
-    private static final Map<MethodTypes, List<Method>> mapMethods = initMapMethods();
-
-    private static Map<MethodTypes, List<Method>> initMapMethods() {
-        LinkedHashMap<MethodTypes, List<Method>> result = new LinkedHashMap<>();
-        for (MethodTypes methodTypes : MethodTypes.values()) {
-            result.put(methodTypes, null);
-        }
-        return result;
-    }
-
-    public static Map<MethodTypes, List<Method>> getMapMethods() {
-        return mapMethods;
-    }
-
-    public static void clearMapMethodsListMethods() {
-        for (List<Method> methods : mapMethods.values()) {
-            if (methods != null) {
-                methods.clear();
-            }
-        }
-    }
 }
