@@ -1,7 +1,5 @@
 package homework;
 
-import homework.annotations.RunStatistics;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -18,7 +16,7 @@ import static homework.MethodTypes.*;
 public class TestRunner {
 
     private static Map<MethodTypes, List<Method>> initializeMapMethods() {
-	LinkedHashMap<MethodTypes, List<Method>> result = new LinkedHashMap<>();
+	Map<MethodTypes, List<Method>> result = new LinkedHashMap<>();
 	for (MethodTypes methodTypes : MethodTypes.values()) {
 	    result.put(methodTypes, new ArrayList<>());
 	}
@@ -54,38 +52,28 @@ public class TestRunner {
 		    throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
 	int successCount = 0;
 	int failureCount = 0;
-	Object testObject = classForTest.getConstructor().newInstance();
-	try {
-	    runAnnotationMetods(mapMethods, testObject, BEFORE);
-	    RunStatistics runStatistics = runAnnotationMetods(mapMethods, testObject, TEST);
-	    successCount = runStatistics.getCountSucess();
-	    failureCount = runStatistics.getCountError();
-	} catch (Exception exception) {
-	    System.out.println(String.format("Failed, error - %s ", exception.getCause()));
-	} finally {
-	    runAnnotationMetods(mapMethods, testObject, AFTER);
-	}
-	printResult(mapMethods.get(TEST).size(), successCount, failureCount);
-    }
-
-    private static RunStatistics runAnnotationMetods(Map<MethodTypes, List<Method>> mapMethods, Object testObject, MethodTypes methodTypes)
-		    throws InvocationTargetException, IllegalAccessException {
-	RunStatistics runStatistics = new RunStatistics();
-	int countSucess = 0;
-	int countError = 0;
-	for (Method method : mapMethods.get(methodTypes)) {
-            try {
-		method.invoke(testObject);
-		countSucess++;
+	var listTestMethods = mapMethods.get(TEST);
+	for (Method testMethod : listTestMethods) {
+	    Object testObject = classForTest.getConstructor().newInstance();
+	    try {
+		runAnnotationMetods(mapMethods, testObject, BEFORE);
+		testMethod.invoke(testObject);
+		successCount++;
 	    } catch (Exception exception) {
-		System.out.println(String.format("Failed, error for methodClass %s - %s ", methodTypes.getAnnotationClass(),
-				exception.getCause()));
-		countError++;
+		System.out.println(String.format("Failed, error - %s ", exception.getCause()));
+		failureCount++;
+	    } finally {
+		runAnnotationMetods(mapMethods, testObject, AFTER);
 	    }
 	}
-	runStatistics.setCountSucess(countSucess);
-	runStatistics.setCountError(countError);
-	return runStatistics;
+	printResult(listTestMethods.size(), successCount, failureCount);
+    }
+
+    private static void runAnnotationMetods(Map<MethodTypes, List<Method>> mapMethods, Object testObject, MethodTypes methodTypes)
+		    throws InvocationTargetException, IllegalAccessException {
+	for (Method method : mapMethods.get(methodTypes)) {
+	    method.invoke(testObject);
+	}
     }
 
     private static void printResult(int total, int sucess, int error) {
