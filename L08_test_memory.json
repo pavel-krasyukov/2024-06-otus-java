@@ -1,0 +1,29 @@
+[ {
+  "gcName" : "G1 Young Generation G1 Concurrent GC G1 Old Generation",
+  "heapSize" : 256,
+  "timeProc" : 5.0
+}, {
+  "gcName" : "G1 Young Generation G1 Concurrent GC G1 Old Generation",
+  "heapSize" : 512,
+  "timeProc" : 5.0
+}, {
+  "gcName" : "G1 Young Generation G1 Concurrent GC G1 Old Generation",
+  "heapSize" : 1024,
+  "timeProc" : 4.0
+}, {
+  "gcName" : "G1 Young Generation G1 Concurrent GC G1 Old Generation",
+  "heapSize" : 2048,
+  "timeProc" : 5.0
+}, {
+  "gcName" : "G1 Young Generation G1 Concurrent GC G1 Old Generation",
+  "heapSize" : 4096,
+  "timeProc" : 5.0
+}, {
+  "gcName" : "G1 Young Generation G1 Concurrent GC G1 Old Generation",
+  "heapSize" : 8192,
+  "timeProc" : 6.0
+}, {
+  "gcName" : "G1 Young Generation G1 Concurrent GC G1 Old Generation",
+  "heapSize" : 16384,
+  "timeProc" : 6.0
+} ]
