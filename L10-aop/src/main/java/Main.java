@@ -6,10 +6,11 @@ import java.lang.reflect.Proxy;
 
 public class Main {
     public static void main(String[] args) {
-	LoggingInterface loggingInterface = (LoggingInterface) Proxy.newProxyInstance(LoggingInterface.class.getClassLoader(),
-			new Class[] { LoggingInterface.class }, new LoggingInvocationHandler(new Logging()));
-	loggingInterface.calculation(1);
-	loggingInterface.calculation(1, 2);
-	loggingInterface.calculation(1, 2, "test");
+	Logging logging = new Logging();
+	LoggingInterface loggingProxy = (LoggingInterface) Proxy.newProxyInstance(logging.getClass().getClassLoader(),
+			new Class[] { LoggingInterface.class }, new LoggingInvocationHandler(logging));
+	loggingProxy.calculation(1);
+	loggingProxy.calculation(1, 2);
+	loggingProxy.calculation(1, 2, "test");
     }
 }
