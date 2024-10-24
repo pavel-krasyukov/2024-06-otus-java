@@ -31,3 +31,4 @@ pluginManagement {
 include("hw06-annotations")
 include("L08-gc")
 include("L10-aop")
+include("L-solid")
