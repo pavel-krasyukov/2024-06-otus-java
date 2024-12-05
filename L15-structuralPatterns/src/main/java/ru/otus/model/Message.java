@@ -266,6 +266,7 @@ public class Message {
 
     @Override
     public Message clone() {
-        return toBuilder().field13(field13.clone()).build();
+        ObjectForMessage clonedField13 = (field13 != null) ? field13.clone() : null;
+        return toBuilder().field13(clonedField13).build();
     }
 }

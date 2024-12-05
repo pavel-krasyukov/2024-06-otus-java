@@ -5,18 +5,17 @@ package ru.otus.processor.homework;
 
 import ru.otus.model.Message;
 import ru.otus.processor.Processor;
-import java.time.LocalDateTime;
 
 public class ProcessorEvenSecondExc implements Processor {
-    private final LocalDateTime dateTimeProvider;
+    private final DateTimeProvider dateTimeProvider;
 
-    public ProcessorEvenSecondExc(LocalDateTime dateTimeProvider) {
+    public ProcessorEvenSecondExc(DateTimeProvider dateTimeProvider) {
 	this.dateTimeProvider = dateTimeProvider;
     }
 
     @Override
     public Message process(Message message) {
-	int sec = dateTimeProvider.getSecond();
+	int sec = dateTimeProvider.localDateTime().getSecond();
 	if (sec % 2 == 0) {
 	    throw new RuntimeException("ProcessorEvenSecondExc RuntimeException!");
 	}
