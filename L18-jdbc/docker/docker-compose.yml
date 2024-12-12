@@ -1,0 +1,9 @@
+services:
+  postgres:
+    image: postgres:16
+    ports:
+      - "5430:5432"
+    environment:
+      POSTGRES_DB: otusDb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
