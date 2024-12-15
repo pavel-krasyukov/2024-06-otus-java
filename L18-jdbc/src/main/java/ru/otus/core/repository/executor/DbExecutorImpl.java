@@ -23,23 +23,22 @@ public class DbExecutorImpl implements DbExecutor {
                 rs.next();
                 return rs.getInt(1);
             }
-        } catch (SQLException ex) {
-            throw new DataBaseOperationException("executeInsert error", ex);
+        } catch (SQLException e) {
+            throw new DataBaseOperationException("executeInsert error", e);
         }
     }
 
     @Override
-    public <T> Optional<T> executeSelect(
-            Connection connection, String sql, List<Object> params, Function<ResultSet, T> rsHandler) {
-        try (var pst = connection.prepareStatement(sql)) {
+    public <T> Optional<T> executeSelect(Connection connection, String sql, List<Object> params, Function<ResultSet, T> rsHandler) {
+        try (var ps = connection.prepareStatement(sql)) {
             for (var idx = 0; idx < params.size(); idx++) {
-                pst.setObject(idx + 1, params.get(idx));
+                ps.setObject(idx + 1, params.get(idx));
             }
-            try (var rs = pst.executeQuery()) {
+            try (var rs = ps.executeQuery()) {
                 return Optional.ofNullable(rsHandler.apply(rs));
             }
-        } catch (SQLException ex) {
-            throw new DataBaseOperationException("executeSelect error", ex);
+        } catch (SQLException e) {
+            throw new DataBaseOperationException("executeSelect error", e);
         }
     }
 }

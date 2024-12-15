@@ -5,7 +5,6 @@ package ru.otus.jdbc.mapper;
 
 import java.lang.reflect.Field;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class EntitySQLMetaDataImpl<T> implements EntitySQLMetaData{
 
@@ -22,7 +21,7 @@ public class EntitySQLMetaDataImpl<T> implements EntitySQLMetaData{
 
     @Override
     public String getSelectByIdSql() {
-	return String.format("select * from %s where %s = ?", entityClassMetaData.getName(), entityClassMetaData.getIdField());
+	return String.format("select * from %s where %s = ?", entityClassMetaData.getName(), entityClassMetaData.getIdField().getName());
     }
 
     @Override
@@ -36,8 +35,9 @@ public class EntitySQLMetaDataImpl<T> implements EntitySQLMetaData{
 
     @Override
     public String getUpdateSql() {
-	String fieldsStr = entityClassMetaData.getFieldsWithoutId().stream().map(Field::getName)
-			.collect(Collectors.joining("= ?,"));
-	return String.format("update %s set %s where %s = ?", entityClassMetaData.getName(), fieldsStr, entityClassMetaData.getIdField());
+	String fieldsStr = entityClassMetaData.getFieldsWithoutId().stream().map(field -> field.getName()+"=?")
+			.collect(Collectors.joining(","));
+	return String.format("update %s set %s where %s = ?", entityClassMetaData.getName(), fieldsStr,
+			entityClassMetaData.getIdField().getName());
     }
 }

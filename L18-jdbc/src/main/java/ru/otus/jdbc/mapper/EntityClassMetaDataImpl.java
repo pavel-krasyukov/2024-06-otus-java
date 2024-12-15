@@ -11,9 +11,17 @@ import java.util.stream.Stream;
 public class EntityClassMetaDataImpl<T> implements EntityClassMetaData{
 
     private final Class<T> aClass;
+    private final Constructor defConstructor;
+    private final Field[] declaredFields;
 
-    public EntityClassMetaDataImpl(Class<T> aClass){
+    public EntityClassMetaDataImpl(Class<T> aClass) {
 	this.aClass = aClass;
+	try {
+	    defConstructor = aClass.getDeclaredConstructor();
+	} catch (NoSuchMethodException e) {
+	    throw new RuntimeException(String.format("Class %s no default constructor found", aClass.getSimpleName()));
+	}
+	declaredFields = aClass.getDeclaredFields();
     }
 
     @Override
@@ -23,29 +31,24 @@ public class EntityClassMetaDataImpl<T> implements EntityClassMetaData{
 
     @Override
     public Constructor getConstructor() {
-	return Stream.of(aClass.getDeclaredConstructors())
-			.filter(constructor -> constructor.getParameterCount() == 0)
-			.map(constructor -> (Constructor<T>) constructor)
-			.findFirst()
-			.orElseThrow(() -> new RuntimeException(
-					"Класс " + aClass.getSimpleName() + " не найдено конструктора по умолчанию"));
+	return defConstructor;
     }
 
     @Override
     public Field getIdField() {
-	return Stream.of(aClass.getDeclaredFields())
+	return Stream.of(declaredFields)
 			.filter(field -> field.isAnnotationPresent(Id.class))
 			.findFirst()
-			.orElseThrow(() -> new RuntimeException("не найдено поля Id"));
+			.orElseThrow(() -> new RuntimeException("no found feild Id"));
     }
 
     @Override
     public List<Field> getAllFields() {
-	return Stream.of(aClass.getDeclaredFields()).toList();
+	return Stream.of(declaredFields).toList();
     }
 
     @Override
     public List<Field> getFieldsWithoutId() {
-	return Stream.of(aClass.getDeclaredFields()).filter(field -> !field.isAnnotationPresent(Id.class)).toList();
+	return Stream.of(declaredFields).filter(field -> !field.isAnnotationPresent(Id.class)).toList();
     }
 }
