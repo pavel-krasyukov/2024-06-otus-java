@@ -53,6 +53,7 @@ public class DbServiceClientImpl implements DBServiceClient {
         log.info("************getClient - get in DB");
         return transactionManager.doInReadOnlyTransaction(session -> {
             var clientOptional = clientDataTemplate.findById(session, id);
+            clientOptional.ifPresent(client -> cache.put(client.getId().toString(), client));
             log.info("client: {}", clientOptional);
             return clientOptional;
         });
@@ -63,6 +64,7 @@ public class DbServiceClientImpl implements DBServiceClient {
         return transactionManager.doInReadOnlyTransaction(session -> {
             var clientList = clientDataTemplate.findAll(session);
             log.info("clientList:{}", clientList);
+            clientList.forEach(client -> cache.put(client.getId().toString(), client));
             return clientList;
         });
     }

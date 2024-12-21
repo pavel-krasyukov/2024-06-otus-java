@@ -63,6 +63,14 @@ public class DbServiceDemo {
         var clientTemplate = new DataTemplateHibernate<>(Client.class);
         ///
         HwCache<String, Client> cache = new MyCache<>();
+        HwListener<String, Client> listener = new HwListener<String, Client>() {
+            @Override
+            public void notify(String key, Client value, String action) {
+                log.info("key:{}, value:{}, action: {}", key, value, action);
+            }
+        };
+        cache.addListener(listener);
+
         var dbServiceClient = new DbServiceClientImpl(transactionManager, clientTemplate, cache);
 
         dbServiceClient.saveClient(new Client("dbServiceFirst"));
