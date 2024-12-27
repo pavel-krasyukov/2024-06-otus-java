@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Клиенты</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Обработчик для добавления клиента
+            const form = document.getElementById('client-form');
+            const responseMessage = document.getElementById('response-message');
+            form.addEventListener('submit', async function(event) {
+                event.preventDefault(); // предотвращаем стандартное поведение формы
+
+                const formData = new URLSearchParams(new FormData(form)).toString();
+
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: formData
+                });
+
+                if (response.ok) {
+                    const message = await response.text();
+                    responseMessage.innerText = message; // отображаем сообщение об успехе
+                    setTimeout(() => {
+                        responseMessage.innerText = ''; // Очистить сообщение
+                    }, 3000);
+                } else {
+                    responseMessage.innerText = 'Ошибка при сохранении клиента'; // обработка ошибки
+                }
+            });
+
+
+            const clientListDiv = document.getElementById('client-list');
+            const showClientsButton = document.getElementById('show-clients');
+
+            // Функция для получения списка клиентов
+            showClientsButton.addEventListener('click', async function() {
+                console.log('showClientsButton click');
+                const response = await fetch('/clients/list'); // ожидаем, что у нас будет этот эндпоинт
+                if (response.ok) {
+                    const clients = await response.json();
+                    clientListDiv.innerHTML = clients.map(client => `<p>${client.name}</p>`).join('');
+                } else {
+                    clientListDiv.innerHTML = 'Ошибка при загрузке списка клиентов';
+                }
+            });
+
+        // Загружаем список клиентов при загрузке страницы
+        //document.addEventListener('DOMContentLoaded', fetchClients);
+        });
+    </script>
+</head>
+
+<body>
+<h4>Добавить клиента</h4>
+<form id="client-form" method="post" action="/clients">
+    <label for="name">Имя клиента:</label>
+    <input type="text" id="name" name="name" required>
+    <button type="submit">Сохранить</button>
+</form>
+
+<div id="response-message"></div>
+
+<h4>Список клиентов</h4>
+<button id="show-clients">Показать список клиентов</button>
+<div id="client-list"></div>
+
+</body>
+</html>
