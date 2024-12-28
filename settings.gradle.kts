@@ -38,4 +38,4 @@ include("L18-jdbc")
 include("L21-jpql")
 include("L24-webServer")
 include("L22-cache")
-
+include("L25-di")
