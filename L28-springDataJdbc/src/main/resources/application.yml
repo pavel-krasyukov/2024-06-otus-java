@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5430/demoDB
+    username: usr
+    password: pwd
+    driver-class-name: org.postgresql.Driver
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html

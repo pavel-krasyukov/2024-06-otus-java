@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Клиенты</title>
+</head>
+<body>
+
+<div>
+    <a th:href="@{clients/add}">Добавить клиента</a>
+</div>
+
+<div th:if="${!clients.isEmpty()}">
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Имя</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="client : ${clients}">
+            <td th:text="${client.id}"></td>
+            <td th:text="${client.name}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div th:if="${clients.isEmpty()}">
+    <p>Клиенты отсутствуют</p>
+</div>
+
+</body>
+</html>
