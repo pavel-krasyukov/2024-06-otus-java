@@ -39,5 +39,7 @@ include("L21-jpql")
 include("L24-webServer")
 include("L22-cache")
 include("L25-di")
+include("L31-executors")
 include("L28-springDataJdbc")
 include("L34-multiprocess")
+
