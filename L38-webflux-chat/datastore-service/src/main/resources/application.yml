@@ -1,0 +1,17 @@
+logging:
+  level:
+    org.springframework.jdbc.core.JdbcTemplate: TRACE
+
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5430/demoDB
+    username: usr
+    password: pwd
+  flyway:
+    enabled: true
+    url: jdbc:postgresql://localhost:5430/demoDB
+    user: usr
+    password: pwd
+
+server:
+  port: 8081
